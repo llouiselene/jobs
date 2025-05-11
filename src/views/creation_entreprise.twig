@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Création d'une entreprise</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+<hr class="hr-large">
+<div class="Title-box">Création d'une entreprise</div>
+<div class="profil_container">
+    <form method="post" action="?uri=creation_entreprise" enctype="multipart/form-data">
+
+        {% if errors.form %}
+            <div class="error-message">{{ errors.form }}</div>
+        {% endif %}
+
+        <div class="form-group">
+            <label>Nom :</label>
+            <input type="text" name="nom_entreprise" value="{{ form_data.nom_entreprise|default('') }}" required>
+            {% if errors.nom_entreprise %}<span class="error">{{ errors.nom_entreprise }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label>Site web :</label>
+            <input type="text" name="site_web" value="{{ form_data.site_web|default('') }}">
+        </div>
+        <div class="form-group">
+            <label>Coordonnées :</label>
+            <input type="text" name="coordonnees" value="{{ form_data.coordonnees|default('') }}">
+        </div>
+        <div class="form-group">
+            <label>Domaine d'activité :</label>
+            <input type="text" name="domaine_activite" value="{{ form_data.domaine_activite|default('') }}">
+        </div>
+        <div class="form-group">
+            <label>Nombre d'employés :</label>
+            <input type="number" name="nombre_employes" value="{{ form_data.nombre_employes|default('') }}">
+        </div>
+        <div class="form-group">
+            <label>Nombre de stagiaires :</label>
+            <input type="number" name="nombre_stagiaires" value="{{ form_data.nombre_stagiaires|default('') }}">
+        </div>
+        <div class="form-group">
+            <label>Date de création :</label>
+            <input id="dob" name="date_creation" type="date" value="{{ form_data.date_creation|default('') }}">
+        </div>
+        <div class="form-group">
+            <label>Description :</label>
+            <input type="text" name="description_entreprise" value="{{ form_data.description_entreprise|default('') }}">
+        </div>
+        <div class="form-group">
+            <label>Contact :</label>
+            <input type="text" name="contact_entreprise" value="{{ form_data.contact_entreprise|default('') }}">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Créer l'entreprise" class="bouton-validation">
+        </div>
+    </form>
+</div>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html>

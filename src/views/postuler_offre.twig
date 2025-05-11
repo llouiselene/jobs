@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Postuler pour un stage</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+<hr class="hr-large">
+<div class="Title-box">Postuler pour votre stage</div>
+<div class="postuler_container">
+    <form method="post" action="?uri=traiter_candidature" enctype="multipart/form-data">
+        <input type="hidden" name="id_offre" value="{{ offre.Id_Offre }}">
+        <div class="form-group">
+            <label>Nom :</label>
+            <input type="text" name="nom" value="{{ user.Nom_Utilisateur }}" required>
+        </div>
+        <div class="form-group">
+            <label>Prénom :</label>
+            <input type="text" name="prenom" value="{{ user.Prenom }}" required>
+        </div>
+        <div class="form-group">
+            <label> Genre :</label>
+            <select id="genre" name="genre" required>
+                <option value="homme" {% if user.Genre == 'homme' %}selected{% endif %}>Homme</option>
+                <option value="femme" {% if user.Genre == 'femme' %}selected{% endif %}>Femme</option>
+                <option value="autre" {% if user.Genre == 'autre' %}selected{% endif %}>Autre</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Lettre de motivation :</label>
+            <input type="text" name="lettre_motivation"
+                   value="{{ form_data.lettre_motivation }}"
+                   class="{{ errors.lettre_motivation ? 'error-field' }}">
+            {% if errors.lettre_motivation %}
+                <span class="error-message">{{ errors.lettre_motivation }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>CV :</label>
+            <input type="file" name="cv" class="{{ errors.cv ? 'error-field' }}">
+            {% if errors.cv %}
+                <span class="error-message">{{ errors.cv }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Postuler">
+        </div>
+    </form>
+</div>
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html>

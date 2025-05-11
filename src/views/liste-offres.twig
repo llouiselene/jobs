@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Liste des Offres</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<div class="title-and-search">
+    <div class="Title-box">Les Offres</div>
+    <div class="search-block">
+        <span class="search-icon" id="searchIcon">
+            <i class="fas fa-search"></i>
+        </span>
+    </div>
+</div>
+
+<div class="space2-5"></div>
+
+<hr class="hr-large">
+
+<div class="space2-5"></div>
+
+<form method="GET" action="" class="search-form" id="searchForm" style="display: none;">
+    <input type="hidden" name="uri" value="liste-offres">
+    <input type="text" id="searchInput" name="search" placeholder="Rechercher..." value="{{ searchTerm }}">
+    <button type="submit">Rechercher</button>
+</form>
+
+<div class="space2-5"></div>
+
+<div class="Title">Liste des offres :</div>
+
+{% for offre in offres %}
+    <a href="?uri=detail_offre&id={{ offre.Id_Offre }}" class="job-box">
+        <div class="title-heart-container">
+            <h2>{{ offre.Nom_Offre }}</h2>
+            {% if role_id == 3 %}
+                <span class="wishlist-heart" data-id="{{ offre.Id_Offre }}" onclick="event.stopPropagation();">
+                    {% if offre.in_wishlist %}
+                        <i class="fas fa-heart heart-icon filled"></i>
+                    {% else %}
+                        <i class="far fa-heart heart-icon empty"></i>
+                    {% endif %}
+                </span>
+            {% endif %}
+        </div>
+        <p>Entreprise: {{ offre.Nom_Entreprise }}</p>
+        <p>Domaine: {{ offre.Domaine_Offre }}</p>
+    </a>
+{% endfor %}
+
+<div class="form-group-page-wish">
+    {% if page > 1 %}
+        <div class="container_page">
+            <a class="sw_page" href="?uri=offre&page={{ page - 1 }}&search={{ searchTerm }}">Précédent</a>
+        </div>
+    {% endif %}
+
+    <div class="container_page">
+        Page {{ page }} sur {{ totalPages }}
+    </div>
+
+    {% if page < totalPages %}
+        <div class="container_page">
+            <a class="sw_page" href="?uri=offre&page={{ page + 1 }}&search={{ searchTerm }}">Suivant</a>
+        </div>
+    {% endif %}
+</div>
+
+</div>
+
+{% if role_id == 1 %}
+    <a class="bouton-fixe" href="?uri=creation_offre">crée une offre</a>
+{% endif %}
+
+{% if role_id == 3 %}
+    <a class="bouton-fixe" href="?uri=candidature">Voir mes candidatures</a>
+{% endif %}
+
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html><!DOCTYPE html>

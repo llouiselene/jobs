@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="/jobs/dev/assets/style.css">
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Accueil</div>
+<div class="space2-5"></div>
+
+{% if role == 'admin' %}
+    <div class="Title">Dernières candidatures sur vos offres :</div>
+    <div class="space5"></div>
+    <div class="job-listing">
+        <div class="vertical-scroll-bar">
+            {% for candidature in candidatures %}
+            <div class="job-box">
+                <h2>{{ candidature.nom }}</h2>
+                <hr>
+                <p>Nom de l'offre : {{ candidature.offre }}</p>
+                <div class="right-align">
+                    <button class="button">Afficher le CV</button>
+                    <button class="button">Afficher la lettre de motivation</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <div class="Title">Dernières offres :</div>
+    <hr class="hr-medium">
+    <div class="job-listing">
+        <div class="vertical-scroll-bar">
+            <a class="job-box" href="Offre_Detail.html">
+                <h2>Stage en informatique</h2>
+                <p>Entreprise: Siemens</p>
+                <p>Département: Dev</p>
+                <p>Technologie: HTML</p>
+            </a>
+        </div>
+    </div>
+{% endif %}
+
+<div class="footer">
+    <a href="/jobs/dev/General/Mentions_Legales.html">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html>

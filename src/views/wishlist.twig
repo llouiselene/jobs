@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Wishlist</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+
+<div class="Title-box">Wishlist</div>
+
+<div class="space2-5"></div>
+
+<div class="hr-medium"></div>
+
+<div class="space2-5"></div>
+
+{% for offre in offres %}
+    <div class="job-box">
+        <div class="title-heart-container">
+            <h2>{{ offre.Nom_Offre }}</h2>
+            {% if role_id == 3 %}
+                <span class="wishlist-heart" data-id="{{ offre.Id_Offre }}">
+                        {% if offre.in_wishlist %}
+                            <i class="fas fa-heart heart-icon"></i>
+                        {% else %}
+                            <i class="far fa-heart heart-icon"></i>
+                        {% endif %}
+                </span>
+            {% endif %}
+        </div>
+        <p>Entreprise: {{ offre.Nom_Entreprise }}</p>
+        <p>Domaine: {{ offre.Domaine_Offre }}</p>
+    </div>
+{% else %}
+    <div class="left5">
+        <div class="job-box">
+            <h2>Votre wishlist est vide</h2>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="form-group-page-wish">
+
+    {% if page > 1 %}
+        <div class="container_page">
+            <a class ="sw_page" href="?page={{ page - 1 }}">Précédent</a>
+        </div>
+    {% endif %}
+
+
+    <div class="container_page">
+        Page {{ page }} sur {{ totalPages }}
+    </div>
+
+
+    {% if page < totalPages %}
+        <div class="container_page">
+            <a class ="sw_page" href="?page={{ page + 1 }}">Suivant</a>
+        </div>
+    {% endif %}
+
+</div>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+
+<script src="/jobs/dev/assets/script.js"></script>
+
+</body>
+</html>

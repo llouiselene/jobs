@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="/dev/assets/style.css">
+</head>
+<body>
+<nav>
+    <ul>
+        {% set menu_items = role == 'admin' ? [
+            {'href': '/jobs/dev/General/accueil.php', 'label': 'Accueil'},
+            {'href': '/jobs/dev/General/liste-offres.php', 'label': 'Voir vos offres'},
+            {'href': '/jobs/dev/Admin/Creer_offre.php', 'label': 'Créer une offre'},
+            {'href': '/jobs/dev/General/entreprise.php', 'label': 'Entreprise'},
+            {'href': '/jobs/dev/General/menu-stats.php', 'label': 'Statistiques'}
+        ] : [
+            {'href': '/jobs/dev/General/accueil.php', 'label': 'Accueil'},
+            {'href': '/jobs/dev/General/liste-offres.php', 'label': 'Offres'},
+            {'href': '/jobs/dev/General/entreprise.php', 'label': 'Entreprise'},
+            {'href': '/jobs/dev/Etudiant/Wishlist.php', 'label': 'Wishlist'},
+            {'href': '/jobs/dev/General/menu-stats.php', 'label': 'Statistiques'}
+        ] %}
+
+        {% for item in menu_items %}
+            <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>
+</body>
+</html>

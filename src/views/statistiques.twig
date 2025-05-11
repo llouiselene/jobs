@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Statistiques</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Statistiques</div>
+
+<div class="stats-container">
+    <!-- Chiffres clés -->
+    <div class="stats-section">
+        <h2>Chiffres clés</h2>
+        <div class="stats-grid">
+            <div class="stats-card">
+                <div class="stats-icon"><i class="fas fa-building"></i></div>
+                <div class="stats-number">{{ stats.totals.entreprises }}</div>
+                <div class="stats-label">Entreprises</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-icon"><i class="fas fa-briefcase"></i></div>
+                <div class="stats-number">{{ stats.totals.offres }}</div>
+                <div class="stats-label">Offres</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="stats-number">{{ stats.totals.candidatures }}</div>
+                <div class="stats-label">Candidatures</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Répartition des utilisateurs -->
+    <div class="stats-section">
+        <h2>Répartition des utilisateurs</h2>
+        <div class="stats-table-container">
+            <table class="stats-table">
+                <thead>
+                <tr>
+                    <th>Rôle</th>
+                    <th>Nombre</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user_role in stats.users_by_role %}
+                    <tr>
+                        <td>{{ user_role.role }}</td>
+                        <td>{{ user_role.total }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Top 5 des entreprises les mieux notées -->
+    <div class="stats-section">
+        <h2>Top 5 des entreprises les mieux notées</h2>
+        <div class="stats-table-container">
+            <table class="stats-table">
+                <thead>
+                <tr>
+                    <th>Entreprise</th>
+                    <th>Note moyenne</th>
+                    <th>Nombre d'avis</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entreprise in stats.top_entreprises %}
+                    <tr>
+                        <td>
+                            <a href="?uri=detail_entreprise&id={{ entreprise.Id_Entreprise }}">
+                                {{ entreprise.Nom_Entreprise }}
+                            </a>
+                        </td>
+                        <td>
+                            <div class="stars">
+                                {% for i in 1..5 %}
+                                    {% if i <= entreprise.note_moyenne %}
+                                        <i class="fas fa-star active"></i>
+                                    {% elseif i <= entreprise.note_moyenne + 0.5 %}
+                                        <i class="fas fa-star-half-alt active"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span>{{ entreprise.note_moyenne|number_format(1) }}</span>
+                            </div>
+                        </td>
+                        <td>{{ entreprise.nombre_notes }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucune entreprise notée pour le moment</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Top 5 des offres les plus populaires -->
+    <div class="stats-section">
+        <h2>Top 5 des offres les plus populaires</h2>
+        <div class="stats-table-container">
+            <table class="stats-table">
+                <thead>
+                <tr>
+                    <th>Offre</th>
+                    <th>Entreprise</th>
+                    <th>Candidatures</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for offre in stats.top_offres %}
+                    <tr>
+                        <td>
+                            <a href="?uri=detail_offre&id={{ offre.Id_Offre }}">
+                                {{ offre.Nom_Offre }}
+                            </a>
+                        </td>
+                        <td>{{ offre.Nom_Entreprise }}</td>
+                        <td>{{ offre.nombre_candidatures }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucune candidature pour le moment</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Répartition des offres par domaine -->
+    <div class="stats-section">
+        <h2>Répartition des offres par domaine</h2>
+        <div class="stats-table-container">
+            <table class="stats-table">
+                <thead>
+                <tr>
+                    <th>Domaine</th>
+                    <th>Nombre d'offres</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for domaine in stats.offres_by_domaine %}
+                    <tr>
+                        <td>{{ domaine.domaine }}</td>
+                        <td>{{ domaine.total }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">Aucune offre pour le moment</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Entreprises avec le plus d'offres -->
+    <div class="stats-section">
+        <h2>Entreprises avec le plus d'offres</h2>
+        <div class="stats-table-container">
+            <table class="stats-table">
+                <thead>
+                <tr>
+                    <th>Entreprise</th>
+                    <th>Nombre d'offres</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entreprise in stats.entreprises_with_most_offres %}
+                    <tr>
+                        <td>
+                            <a href="?uri=detail_entreprise&id={{ entreprise.Id_Entreprise }}">
+                                {{ entreprise.Nom_Entreprise }}
+                            </a>
+                        </td>
+                        <td>{{ entreprise.nombre_offres }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2">Aucune entreprise avec des offres</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+<script src="/dev/assets/script.js"></script>
+</body>
+</html>

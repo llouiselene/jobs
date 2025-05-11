@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Statistiques de l'étudiant</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Statistiques de {{ etudiant.Prenom }} {{ etudiant.Nom_Utilisateur }}</div>
+
+<div class="stats-container">
+    <div class="stats-section">
+        <h2>Candidatures</h2>
+        <div class="stats-grid">
+            <div class="stats-card">
+                <div class="stats-number">{{ stats.nb_candidatures }}</div>
+                <div class="stats-label">Total</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <h2>Entreprises postulées</h2>
+        {% if stats.entreprises_postulees|length > 0 %}
+            <table class="stats-table">
+                <thead>
+                <tr>
+                    <th>Entreprise</th>
+                    <th>Candidatures</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entreprise in stats.entreprises_postulees %}
+                    <tr>
+                        <td>{{ entreprise.Nom_Entreprise }}</td>
+                        <td>{{ entreprise.nb_candidatures }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aucune entreprise postulée</p>
+        {% endif %}
+    </div>
+
+    <div class="stats-section">
+        <h2>Domaines postulés</h2>
+        {% if stats.domaines_postules|length > 0 %}
+            <table class="stats-table">
+                <thead>
+                <tr>
+                    <th>Domaine</th>
+                    <th>Candidatures</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for domaine in stats.domaines_postules %}
+                    <tr>
+                        <td>{{ domaine.Domaine_Offre }}</td>
+                        <td>{{ domaine.nb_candidatures }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aucun domaine postulé</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .stats-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .stats-section {
+        margin-bottom: 30px;
+        background: #222;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 15px;
+    }
+
+    .stats-card {
+        background: #333;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .stats-number {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .stats-label {
+        font-size: 1em;
+        color: #aaa;
+        margin-top: 5px;
+    }
+
+    .stats-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .stats-table th, .stats-table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #444;
+    }
+
+    .stats-table th {
+        background-color: #333;
+    }
+</style>
+
+<script src="/jobs/dev/assets/script.js"></script>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+</body>
+</html>
