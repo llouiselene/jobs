@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ offre["Nom_Offre"] }}</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+
+<div class="Title-box">{{ offre["Nom_Offre"] }}</div>
+
+
+<div class="space5"></div>
+
+<div class="Title">Informations sur le stage :</div>
+<hr class="hr-large">
+
+<div class="job-box">
+    <div class="text" id="entreprise">Entreprise : {{ offre["Id_Entreprise"] }} </div>
+    <div class="text" id="departement">Département : {{ offre["Domaine_Offre"] }} </div>
+    <div class="text" id="profil">Profil recherché : {{ offre["Profil_Recherche"] }} </div>
+    <div class="text" id="coordonates">Coordonnées : {{ offre["Coordonnees_Offre"] }}</div>
+    <div class="text" id="remuneration">Rémunération : {{ offre["Remuneration"] }}</div>
+</div>
+
+<div class="space5"></div>
+<div class="Title">Présentation :</div>
+<hr class="hr-large">
+
+<div class="job-box">
+    <div class="text">{{ offre["Description_Offre"] }}</div>
+</div>
+
+{% if role_id == 1 or role_id == 2 %}
+    <div class="space5"></div>
+
+    <div class="Title">Modifier les informations de l'offre :</div>
+
+    <form id="offreForm" method="post" action="?uri=modifier_offre&id={{ offre.Id_Offre }}">
+        <div class="container">
+            <input type="hidden" name="id" value="{{ offre.Id_Offre }}">
+            <div class="form-group">
+                <label>Nom de l'offre :</label>
+                <input type="text" name="Nom_Offre" value="{{ offre.Nom_Offre }}">
+            </div>
+            <div class="form-group">
+                <label>Département/Domaine :</label>
+                <input type="text" name="Domaine_Offre" value="{{ offre.Domaine_Offre }}">
+            </div>
+            <div class="form-group">
+                <label>Profil recherché :</label>
+                <input type="text" name="Profil_Recherche" value="{{ offre.Profil_Recherche }}">
+            </div>
+            <div class="form-group">
+                <label>Coordonnées :</label>
+                <input type="text" name="Coordonnees_Offre" value="{{ offre.Coordonnees_Offre }}">
+            </div>
+            <div class="form-group">
+                <label>Description :</label>
+                <textarea name="Description_Offre" rows="5">{{ offre.Description_Offre }}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Rémunération :</label>
+                <input type="text" name="Remuneration" value="{{ offre.Remuneration }}">
+            </div>
+        </div>
+    </form>
+    <button onclick="document.getElementById('offreForm').submit();" class="bouton-fixe">Enregistrer les modifications</button>
+{% endif %}
+
+<div class="space5"></div>
+{% if role_id == 3 %}
+    <a class="container" href="?uri=postuler_offre&id={{ offre.Id_Offre }}">
+        <h2>Postuler</h2>
+    </a>
+{% endif %}
+
+{% if role_id == 1 %}
+    <a href="?uri=supprimer_offre&id={{ offre.Id_Offre }}" onclick="return confirm('Confirmer la suppression ?');" class="bouton-fixe-gauche">
+        Supprimer
+    </a>
+{% endif %}
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitButton = document.querySelector('.bouton-fixe');
+        if (submitButton) {
+            submitButton.addEventListener('click', function() {
+                document.getElementById('offreForm').submit();
+            });
+        }
+    });
+</script>
+<script src="/jobs/dev/assets/script.js"></script>
+
+</body>
+</html>

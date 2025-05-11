@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="/dev/assets/style.css">
+</head>
+<body>
+
+
+{% set menu_items = role == 'admin' ? [
+    {'href': '/jobs/dev/General/accueil.php', 'label': 'Accueil'},
+    {'href': '/jobs/dev/General/liste-offres.php', 'label': 'Voir vos offres'},
+    {'href': '/jobs/dev/Admin/Creer_offre.php', 'label': 'Créer une offre'},
+    {'href': '/jobs/dev/General/entreprise.php', 'label': 'Entreprise'},
+    {'href': '/jobs/dev/General/menu-stats.php', 'label': 'Statistiques'}
+] : [
+    {'href': '/jobs/dev/General/accueil.php', 'label': 'Accueil'},
+    {'href': '/jobs/dev/General/liste-offres.php', 'label': 'Offres'},
+    {'href': '/jobs/dev/General/entreprise.php', 'label': 'Entreprise'},
+    {'href': '/jobs/dev/Etudiant/Wishlist.php', 'label': 'Wishlist'},
+    {'href': '/jobs/dev/General/menu-stats.php', 'label': 'Statistiques'}
+] %}
+<div class="header">
+    <div class="menu-icon-container" id="menuIcon">
+        <i class="fas fa-bars open"></i>
+    </div>
+    <h1>Job*</h1>
+    <a class="profile-icon" href="/jobs/dev/General/profil.php"></a>
+</div>
+<div class="dropdown-menu" id="dropdownMenu">
+    <ul class="container_menu">
+        {% for item in menu_items %}
+            <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Modifier une offre</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Modifier une offre</div>
+<div class="space2-5"></div>
+
+
+<div class="profil_container">
+<div class="form-group">
+    <label>Titre :</label>
+    <input type="text" value= "{{ offres["Nom_Offre"] }}" name="entreprise">
+</div>
+<div class="form-group">
+    <label>Entreprise :</label>
+    <input type="text" value= "{{ offres["Nom_Entreprise"] }}" name="entreprise">
+</div>
+<div class="form-group">
+    <label>Départment :</label>
+    <input type="text" value= "{{ offres["Domaine_Offre"] }}" name="departement">
+</div>
+<div class="form-group">
+    <label>Profil recherché :</label>
+    <input type="text" value= "{{ offres["Profil_Recherche"] }}" name="profil_recherche">
+</div>
+<div class="form-group">
+    <label>Coordonnées :</label>
+    <input type="text" value= "{{ offres["Coordonnees_Offre"] }}" name="coordonnees">
+</div>
+
+<div class="form-group">
+    <label>Présentation du stage :</label>
+    <input type="text" value="{{ offres["Description_Offre"] }}" name="presentation_stage">
+</div>
+</div>
+
+
+<a class="container" href="Modifier_offre.php">
+    <h2> Modifier l'offre </h2>
+</a>
+
+<div class="space5"></div>
+<button class="bouton-fixe-gauche"> Supprimer cette offre</button>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+<script src="/jobs/dev/assets/script.js"></script>
+
+</body>
+</html>

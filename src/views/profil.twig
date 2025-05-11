@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Profil</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Profil</div>
+
+<div class="profil_container">
+    <div class="form-group">
+        <label>Nom :</label>
+        <input type="text" value="{{ utilisateur.Nom_Utilisateur }}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Prénom :</label>
+        <input type="text" value="{{ utilisateur.Prenom }}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Genre :</label>
+        <input type="text" value="{{ utilisateur.Genre }}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Email :</label>
+        <input type="email" value="{{ utilisateur.Email }}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Téléphone :</label>
+        <input type="text" value="{{ utilisateur.Telephone }}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Date de naissance :</label>
+        <input type="date" value="{{ utilisateur.Date_de_Naissance|date('Y-m-d') }}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Type de compte :</label>
+        <input type="text" value="{% if utilisateur.Id_Role == 1 %}Administrateur{% elseif utilisateur.Id_Role == 2 %}Pilote{% else %}Étudiant{% endif %}" disabled>
+    </div>
+
+    {% if utilisateur.Id_Role == 1 or utilisateur.Id_Role == 2 %}
+        <a class="bouton-fixe" href="?uri=creation_profil">crée un profil</a>
+    {% endif %}
+
+</div>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html>

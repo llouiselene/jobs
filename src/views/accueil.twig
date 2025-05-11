@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- CSS personnalisé -->
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <!-- JS personnalisé -->
+    <script src="/jobs/dev/assets/script.js"></script>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Accueil</div>
+<div class="space2-5"></div>
+
+{% if role_id == 1 or role_id == 2 %}
+    <div class="Title">Dernières candidatures</div>
+    <div class="job-listing">
+        {% for candidature in candidatures %}
+            <div class="job-box">
+                <h2>{{ candidature.etudiant_nom }} {{ candidature.etudiant_prenom }}</h2>
+                <p>Offre : {{ candidature.offre_titre }}</p>
+                <p>Entreprise : {{ candidature.Nom_Entreprise }}</p>
+                <p>Date : {{ candidature.Date_Candid|date('d/m/Y') }}</p>
+            </div>
+        {% else %}
+            <p>Aucune candidature récente</p>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="Title">Dernières offres</div>
+    <div class="job-listing">
+        {% for offre in offres %}
+            <div class="job-box">
+                <div class="title-heart-container">
+                    <h2>{{ offre.Nom_Offre }}</h2>
+                    {% if role_id == 3 %}
+                        <span class="wishlist-heart" data-id="{{ offre.Id_Offre }}">
+                        {% if offre.in_wishlist %}
+                            <i class="fas fa-heart heart-icon"></i>
+                        {% else %}
+                            <i class="far fa-heart heart-icon"></i>
+                        {% endif %}
+                </span>
+                    {% endif %}
+                </div>
+                <p>Entreprise: {{ offre.Nom_Entreprise }}</p>
+                <p>Domaine: {{ offre.Domaine_Offre }}</p>
+            </div>
+        {% else %}
+            <p>Aucune offre disponible</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+
+</body>
+</html>

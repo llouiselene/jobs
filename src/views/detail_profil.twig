@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Détail du profil</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Détail du profil - {{ utilisateur.Prenom }} {{ utilisateur.Nom_Utilisateur }}</div>
+
+<div class="profil_container">
+    <div class="profil-section">
+        <h2>Informations personnelles</h2>
+        <div class="form-group">
+            <label>Nom :</label>
+            <input type="text" value="{{ utilisateur.Nom_Utilisateur }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label>Prénom :</label>
+            <input type="text" value="{{ utilisateur.Prenom }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label>Genre :</label>
+            <input type="text" value="{{ utilisateur.Genre }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label>Date de naissance :</label>
+            <input type="date" value="{{ utilisateur.Date_de_Naissance|date('Y-m-d') }}" disabled>
+        </div>
+    </div>
+
+    <div class="profil-section">
+        <h2>Coordonnées</h2>
+        <div class="form-group">
+            <label>Email :</label>
+            <input type="email" value="{{ utilisateur.Email }}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label>Téléphone :</label>
+            <input type="text" value="{{ utilisateur.Telephone }}" disabled>
+        </div>
+    </div>
+
+    <div class="profil-section">
+        <h2>Informations du compte</h2>
+        <div class="form-group">
+            <label>Type de compte :</label>
+            <input type="text" value="{% if utilisateur.Id_Role == 1 %}Administrateur{% elseif utilisateur.Id_Role == 2 %}Pilote{% else %}Étudiant{% endif %}" disabled>
+        </div>
+
+        {% if utilisateur.Id_Role == 3 %}
+            <div class="form-group">
+                <label>Nombre de candidatures :</label>
+                <input type="text" value="{{ stats.nb_candidatures ?? 0 }}" disabled>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="profil-actions">
+        {% if (role_id == 1 or role_id == 2) and utilisateur.Id_Role == 3 %}
+            <a class="bouton-fixe" href="?uri=statistiques_etudiant&id={{ utilisateur.Id_Utilisateur }}">
+                <i class="fas fa-chart-bar"></i> Statistiques profil
+            </a>
+        {% endif %}
+
+        {% if (role_id == 1) or (role_id == 2 and utilisateur.Id_Role == 3) %}
+            <a class="bouton-fixe-gauche" href="javascript:void(0)"
+               onclick="confirmDelete({{ utilisateur.Id_Utilisateur }})">
+                <i class="fas fa-trash"></i> Supprimer le profil
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{% if error is defined %}
+    <div class="alert-error">
+        {% if error == 'profil_inexistant' %}
+            Ce profil n'existe pas.
+        {% elseif error == 'permission_refusee' %}
+            Action non autorisée.
+        {% elseif error == 'echec_suppression' %}
+            Erreur lors de la suppression.
+        {% endif %}
+    </div>
+{% endif %}
+
+{% if success is defined and success == 'profil_supprime' %}
+    <div class="alert-success">
+        Profil supprimé avec succès.
+    </div>
+{% endif %}
+
+<script>
+    function confirmDelete(userId) {
+        if (confirm("Êtes-vous sûr de vouloir supprimer ce profil ?")) {
+            window.location.href = "?uri=supprimer_profil&id=" + userId;
+        }
+    }
+</script>
+
+<style>
+    .profil-section {
+        background: #222;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+    .profil-section h2 {
+        margin-top: 0;
+        border-bottom: 1px solid #444;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+    }
+
+    .profil-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .bouton-fixe, .bouton-fixe-gauche {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .bouton-fixe i, .bouton-fixe-gauche i {
+        font-size: 0.9em;
+    }
+
+    input[disabled] {
+        background: #333 !important;
+        color: #ddd !important;
+        opacity: 1 !important;
+        border: 1px solid #444 !important;
+    }
+</style>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html>

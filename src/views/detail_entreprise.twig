@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ entreprise["Nom_Entreprise"] }}</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">{{ entreprise["Nom_Entreprise"] }}</div>
+<div class="space2-5"></div>
+
+<div class="Title">Informations de l'entreprise :</div>
+<div class="space5"></div>
+<div class="text">Site web : {{ entreprise["Site_Web"] }}</div>
+<div class="text">Date de création : {{ entreprise["Date_Creation"] }}</div>
+<div class="text">Domaine(s) d’activité : {{ entreprise["Domaine_Entreprise"] }}</div>
+<div class="text">Nombre d’employés : {{ entreprise["Nombre_Employes"] }}</div>
+<div class="text">Coordonnées : {{ entreprise["Coordonnees_Entreprise"] }}</div>
+<div class="text">Contact : {{ entreprise["Contact"] }}</div>
+
+{% if role_id == 1 or role_id == 2 %}
+    <div class="space5"></div>
+
+    <div class="Title">Modifier les informations de l'entreprise :</div>
+
+    <form id="entrepriseForm" method="post" action="?uri=modifier_entreprise&id={{ entreprise.Id_Entreprise }}">
+        <div class="container">
+            <div class="form-group">
+                <label>Site Web :</label>
+                <input type="text" name="Site_Web" value="{{ entreprise.Site_Web }}">
+            </div>
+            <div class="form-group">
+                <label>Date de création :</label>
+                <input type="date" name="Date_Creation" value="{{ entreprise.Date_Creation|date('Y-m-d') }}">
+            </div>
+            <div class="form-group">
+                <label>Domaine(s) d'activité : </label>
+                <input type="text" name="Domaine_Entreprise" value="{{ entreprise.Domaine_Entreprise }}">
+            </div>
+            <div class="form-group">
+                <label>Nombre d'employés :</label>
+                <input type="number" name="Nombre_Employes" value="{{ entreprise.Nombre_Employes }}">
+            </div>
+            <div class="form-group">
+                <label>Coordonnées :</label>
+                <input type="text" name="Coordonnees_Entreprise" value="{{ entreprise.Coordonnees_Entreprise }}">
+            </div>
+            <div class="form-group">
+                <label>Contact :</label>
+                <input type="text" name="Contact" value="{{ entreprise.Contact }}">
+            </div>
+            <div class="form-group">
+                <label>Nombre de stagiaires :</label>
+                <input type="number" name="Nombre_Stagiaires" value="{{ entreprise.Nombre_Stagiaires }}">
+            </div>
+
+        </div>
+    </form>
+    <button onclick="document.getElementById('entrepriseForm').submit();" class="bouton-fixe">Enregistrer les modifications</button>
+    {% if role_id == 1 or role_id == 2 %}
+        <a href="?uri=supprimer_entreprise&id={{ entreprise.Id_Entreprise }}"
+           onclick="return confirm('Supprimer cette entreprise ?');"
+           class="bouton-fixe-gauche">Supprimer l'entreprise</a>
+    {% endif %}
+{% endif %}
+
+
+
+<div class="job-box">
+    {# Affichage de la note moyenne pour tous les utilisateurs #}
+    <div class="rating-section">
+        <h3>Évaluation de l'entreprise</h3>
+        <div class="average-rating">
+            <span>Note moyenne : </span>
+            {% if average_rating %}
+                <div class="stars">
+                    {% for i in 1..5 %}
+                        {% if i <= average_rating %}
+                            <i class="fas fa-star active"></i>
+                        {% elseif i <= average_rating + 0.5 %}
+                            <i class="fas fa-star-half-alt active"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                    <span class="rating-value">{{ average_rating }}/5</span>
+                </div>
+            {% else %}
+                <span>Aucune évaluation pour le moment</span>
+            {% endif %}
+        </div>
+
+        {# Section de notation pour admin et pilote uniquement #}
+        {% if role_id == 1 or role_id == 2 %}
+            <div class="user-rating">
+                <h4>Votre évaluation</h4>
+                <form method="post" action="?uri=noter_entreprise" class="rating-form">
+                    <input type="hidden" name="id_entreprise" value="{{ entreprise.Id_Entreprise }}">
+                    <div class="star-rating">
+                        {% for i in 1..5 %}
+                            <input type="radio" id="star{{ i }}" name="note" value="{{ i }}" {% if user_rating == i %}checked{% endif %}>
+                            <label for="star{{ i }}"><i class="fas fa-star"></i></label>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="rating-submit">Enregistrer mon évaluation</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="space5"></div>
+<div class="Title"> Liste des offres disponibles de l'entreprise :</div>
+
+<div class="job-listing">
+    <div class="job-box">
+        <h2>Stage en informatique</h2>
+        <p>Entreprise: {{ entreprise["Nom_Entreprise"] }}</p>
+        <p>Département: dev</p>
+        <p>Technologie: html</p>
+    </div>
+    <div class="job-box">
+        <h2>Stage en informatique</h2>
+        <p>Entreprise: {{ entreprise["Nom_Entreprise"] }}</p>
+        <p>Département: front end</p>
+        <p>Technologie: html</p>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitButton = document.querySelector('.bouton-fixe');
+        if (submitButton) {
+            submitButton.addEventListener('click', function() {
+                document.getElementById('entrepriseForm').submit();
+            });
+        }
+    });
+</script>
+<script src="/jobs/dev/assets/script.js"></script>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+
+</body>
+</html>

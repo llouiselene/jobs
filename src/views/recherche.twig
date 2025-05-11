@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Recherche profil</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+
+<div class="title-and-search">
+    <div class="Title-box">Recherche profil</div>
+    <div class="search-block">
+        <span class="search-icon" id="searchIcon">
+            <i class="fas fa-search"></i>
+        </span>
+    </div>
+</div>
+
+<div class="space2-5"></div>
+
+<hr class="hr-large">
+
+<div class="space2-5"></div>
+
+<form method="GET" action="" class="search-form" id="searchForm" style="display: none;">
+    <input type="hidden" name="uri" value="recherche">
+    <input type="text" name="nom" placeholder="Nom" value="{{ nom }}">
+    <input type="text" name="prenom" placeholder="Prénom" value="{{ prenom }}">
+    <input type="text" name="email" placeholder="Email" value="{{ email }}">
+    <button type="submit">Rechercher</button>
+</form>
+
+
+<div class="space2-5"></div>
+
+<!-- Cette partie manquait : l'affichage des résultats -->
+{% if recherches is defined and recherches|length > 0 %}
+    {% for recherche in recherches %}
+        <a class="container_entreprise" href="?uri=detail_profil&id={{ recherche.Id_Utilisateur }}">
+        <h2>{{ recherche.Nom_Utilisateur }} {{ recherche.Prenom }}</h2>
+            <p>Email : {{ recherche.Email }}</p>
+            <p>Rôle : {{ recherche.Id_Role }}</p>
+        </a>
+    {% endfor %}
+{% else %}
+    <p>Aucun profil trouvé.</p>
+{% endif %}
+
+<div class="form-group-page">
+    {% if page > 1 %}
+        <div class="container_page">
+            <a class="sw_page" href="?uri=recherche&page={{ page - 1 }}&nom={{ nom }}&prenom={{ prenom }}&email={{ email }}">Précédent</a>
+        </div>
+    {% endif %}
+
+    <div class="container_page">
+        Page {{ page }} sur {{ totalPages }}
+    </div>
+
+    {% if page < totalPages %}
+        <div class="container_page">
+            <a class="sw_page" href="?uri=recherche&page={{ page + 1 }}&nom={{ nom }}&prenom={{ prenom }}&email={{ email }}">Suivant</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html>

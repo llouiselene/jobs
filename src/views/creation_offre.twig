@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Créer une offre</title>
+    <link href="/jobs/dev/assets/style.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+</head>
+<body>
+{% include 'menu.twig' %}
+
+<hr class="hr-large">
+<div class="Title-box">Créer un stage</div>
+
+<div class="space2-5"></div>
+<form method="POST" action="?uri=creation_offre">
+    <div class="profil_container">
+        <div class="form-group">
+            <label>Entreprise :</label>
+            <input type="text" name="entreprise" required>
+        </div>
+        <div class="form-group">
+            <label>Département :</label>
+            <input type="text" name="departement" required>
+        </div>
+        <div class="form-group">
+            <label>Technologie :</label>
+            <input type="text" name="technologie" required>
+        </div>
+        <div class="form-group">
+            <label>Profil recherché :</label>
+            <input type="text" name="profil_recherche" required>
+        </div>
+        <div class="form-group">
+            <label>Ville :</label>
+            <input type="text" name="ville" required>
+        </div>
+        <div class="form-group">
+            <label>Pays :</label>
+            <input type="text" name="pays" required>
+        </div>
+        <div class="form-group">
+            <label>Présentation du stage :</label>
+            <textarea name="presentation_stage" required></textarea>
+        </div>
+        <button type="submit" class="container">
+            <h2>Créer l'offre</h2>
+        </button>
+    </div>
+</form>
+
+
+
+<div class="space5"></div>
+
+<div class="footer">
+    <a href="?uri=mentions_legales">Mentions Légales</a> - 2025 Job* - À propos
+</div>
+
+
+<script src="/jobs/dev/assets/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<?php
+namespace App\controlleurs;
+
+use App\modeles\AuthentifierModele;
+
+class AuthentifierControlleur
+{
+    private $authentifierModele;
+    private $pdo;
+    private $twig;
+
+    public function __construct($pdo, $twig)
+    {
+        $this->authentifierModele = new AuthentifierModele($pdo);
+        $this->pdo = $pdo;
+        $this->twig = $twig;
+    }
+
+    // À ajouter dans votre classe AuthentifierControlleur
+    public function redirigerSelonRole($role)
+    {
+        if (strtolower($role) === 'administrateur') {
+            header('Location: ?uri=/');
+            exit;
+        } elseif (strtolower($role) === 'pilote') {
+            header('Location: ?uri=profil');
+            exit;
+        } else {
+            header('Location: ?uri=profil');
+            exit;
+        }
+    }
+    // Dans AuthentifierControlleur
+    public function traiterFormulaire()
+    {
+        isset($_POST['email']) ? $email = $_POST['email'] : $email = null;
+        isset($_POST['password']) ? $mdp = $_POST['password'] : $mdp = null;
+
+        // Vérifier si les champs sont remplis
+        if (!$email || !$mdp) {
+            echo "Veuillez remplir tous les champs";
+            return;
+        }
+
+        // Si l'authentification réussit
+        if ($this->authentifierModele->traiterFormulaireModele($email, $mdp)) {
+            session_regenerate_id(true);
+            // Redirection selon le rôle
+            $this->redirigerSelonRole($_SESSION['role']);
+        }
+    }
+    private function gererCookies($email)
+    {
+        $consentement = isset($_COOKIE['consent_choice']) && $_COOKIE['consent_choice'] === 'accepted';
+
+        if ($consentement) {
+            $expiration = time() + (86400 * 30); // 30 jours
+            setcookie('id_utilisateur', $_SESSION['id_utilisateur'], [
+                'expires' => $expiration,
+                'path' => '/',
+                'secure' => true, // Activer en production avec HTTPS
+                'httponly' => true,
+                'samesite' => 'Strict',
+            ]);
+
+            // Si "remember me" est coché, on garde l'email en cookie
+            if (isset($_POST['remember_me']) && $_POST['remember_me'] === 'on') {
+                setcookie('remember_email', $email, [
+                    'expires' => $expiration,
+                    'path' => '/',
+                    'secure' => true, // Activer en production avec HTTPS
+                    'httponly' => false, // Permettre l'accès par JS pour pré-remplir le formulaire
+                    'samesite' => 'Strict',
+                ]);
+            }
+        }
+    }
+    public function connexion()
+    {
+        session_start();
+
+        // Vérification de la méthode POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Traitement du formulaire d'authentification
+            isset($_POST['email']) ? $email = $_POST['email'] : $email = null;
+            isset($_POST['password']) ? $mdp = $_POST['password'] : $mdp = null;
+
+            // Vérifier si les champs sont remplis
+            if (!$email || !$mdp) {
+                echo "Veuillez remplir tous les champs";
+                return;
+            }
+
+            // Authentification de l'utilisateur
+            if ($this->authentifierModele->traiterFormulaireModele($email, $mdp)) {
+                session_regenerate_id(true);
+                $_SESSION['logged_in'] = true;
+                $_SESSION['role'] = $this->authentifierModele->getRoleByEmail($email);
+                $_SESSION['id_utilisateur'] = $this->authentifierModele->getIdByEmail($email);
+                $_SESSION['mail'] = $email;
+
+                // Redirection selon le rôle
+                $this->redirigerSelonRole($_SESSION['role']);
+            } else {
+                echo "Authentification échouée. Vérifiez vos identifiants.";
+            }
+        } else {
+            // Affiche le formulaire de connexion
+            $this->afficherAuthentifier('connexion');
+        }
+    }
+
+
+    public function deconnecter()
+    {
+        // Démarrer la session si ce n'est pas déjà fait
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Détruire les variables de session
+        session_unset();  // Supprimer toutes les variables de session
+        session_destroy(); // Détruire la session
+
+        // Supprimer les cookies
+        setcookie('id_utilisateur', '', time() - 3600, '/');  // Supprimer le cookie 'id_utilisateur'
+        setcookie('remember_email', '', time() - 3600, '/');   // Supprimer le cookie 'remember_email'
+
+        // Important : Après avoir détruit les cookies, il peut être nécessaire de supprimer aussi la session.
+        // Rediriger l'utilisateur vers la page de connexion
+        header('Location: ?uri=connexion');
+        exit();
+    }
+
+
+
+    // Reconnexion via cookie
+    public function reconnexionViaCookie()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $id_utilisateur = filter_input(INPUT_COOKIE, 'id_utilisateur', FILTER_VALIDATE_INT);
+
+        if ($id_utilisateur) {
+            $utilisateur = $this->authentifierModele->getUserById($id_utilisateur);
+
+            if ($utilisateur && $utilisateur['status'] === 'actif') {
+                session_regenerate_id(true);
+                $_SESSION['logged_in'] = true;
+                $_SESSION['role'] = $utilisateur['role'];
+                $_SESSION['id_utilisateur'] = $utilisateur['id_utilisateur'];
+                $_SESSION['mail'] = $utilisateur['mail'];
+
+                header('Location: dashboard.php');
+                exit();
+            } else {
+                // Si l'utilisateur n'est pas actif, déconnexion et redirection vers la page de connexion
+                $this->deconnecter();
+            }
+        } else {
+            // Si le cookie est invalide ou absent, redirection vers la page de connexion
+            header('Location: ?uri=connexion');
+            exit();
+        }
+    }
+
+
+    // Méthode pour afficher la vue de la connexion
+    public function afficherAuthentifier(string $pageweb)
+    {
+        $successMessage = $_SESSION['succes_message'] ?? null;
+        unset($_SESSION['succes_message']);
+
+        $data = [
+            'success_message' => $successMessage
+        ];
+
+        // Si l'utilisateur est connecté, afficher ses informations
+        if (isset($_SESSION['id_utilisateur'])) {
+            $data['motDePasse'] = $this->authentifierModele->getMotDePasseById($_SESSION['id_utilisateur']);
+            $data['email'] = $_SESSION['mail'] ?? null;
+        }
+
+        // Rendre le template Twig avec les données
+        echo $this->twig->render("$pageweb.twig.html", $data);
+    }
+}
