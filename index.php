@@ -48,7 +48,7 @@ try {
         $db_pass
     );
 
-    // Configuration des attributs PDO 
+    // Configuration des attributs PDO t
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     $db->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, false);
 } catch (PDOException $e) {
