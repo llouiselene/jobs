@@ -36,7 +36,7 @@ class OffreModel extends Model {
      * @return array Liste de toutes les offres
      */
     public function getAllOffres() {
-        $stmt = $this->db->query("SELECT * FROM Offre");
+        $stmt = $this->db->query("SELECT * FROM offre");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -45,7 +45,7 @@ class OffreModel extends Model {
      * @return array Liste des 3 dernières offres
      */
     public function getLastOffres() {
-        $stmt = $this->db->query("SELECT * FROM Offre ORDER BY Date_Offre DESC LIMIT 3");
+        $stmt = $this->db->query("SELECT * FROM offre ORDER BY Date_Offre DESC LIMIT 3");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -56,7 +56,7 @@ class OffreModel extends Model {
      */
     public function getOffreById($id_offre)
     {
-        $stmt = $this->db->prepare("SELECT * FROM Offre WHERE Id_Offre = ?");
+        $stmt = $this->db->prepare("SELECT * FROM offre WHERE Id_Offre = ?");
         $stmt->execute([$id_offre]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -77,7 +77,7 @@ class OffreModel extends Model {
      * @return bool Succès de l'opération
      */
     public function addOffre($nom_offre, $description_offre, $domaine_offre, $profil_recherche, $coordonnees, $remuneration, $date_offre, $nombre_etudiants, $id_utilisateur, $id_entreprise) {
-        $stmt = $this->db->prepare("INSERT INTO Offre (Nom_Offre, Description_Offre, Domaine_Offre, Profil_Recherche, Coordonnees_Offre, Remuneration, Date_Offre, Nombre_Etudiants, Id_Utilisateur, Id_Entreprise) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO offre (Nom_Offre, Description_Offre, Domaine_Offre, Profil_Recherche, Coordonnees_Offre, Remuneration, Date_Offre, Nombre_Etudiants, Id_Utilisateur, Id_Entreprise) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         return $stmt->execute([$nom_offre, $description_offre, $domaine_offre, $profil_recherche, $coordonnees, $remuneration, $date_offre, $nombre_etudiants, $id_utilisateur, $id_entreprise]);
     }
 
@@ -90,7 +90,7 @@ class OffreModel extends Model {
      */
     public function deleteOffre($id_offre)
     {
-        $stmt = $this->db->prepare("DELETE FROM Offre WHERE Id_Offre = ?");
+        $stmt = $this->db->prepare("DELETE FROM offre WHERE Id_Offre = ?");
         return $stmt->execute([$id_offre]);
     }
 
@@ -107,7 +107,7 @@ class OffreModel extends Model {
     {
         $this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $sql = "SELECT * FROM Offre 
+        $sql = "SELECT * FROM offre 
             WHERE 
                 Nom_Offre LIKE :search1 OR
                 Domaine_Offre LIKE :search2 OR
@@ -137,7 +137,7 @@ class OffreModel extends Model {
      */
     public function countSearchResults($searchTerm)
     {
-        $sql = "SELECT COUNT(*) as total FROM Offre 
+        $sql = "SELECT COUNT(*) as total FROM offre 
             WHERE 
                 Nom_Offre LIKE :search1 OR
                 Domaine_Offre LIKE :search2 OR
@@ -219,7 +219,7 @@ class OffreModel extends Model {
     public function updateOffre($nom_offre, $description_offre, $domaine_offre, $profil_recherche, $coordonnees, $remuneration, $date_offre, $nombre_etudiants, $id_utilisateur, $id_entreprise, $id_offre) {
         try {
             $stmt = $this->db->prepare("
-            UPDATE Offre 
+            UPDATE offre 
             SET Nom_Offre = ?, 
                 Description_Offre = ?, 
                 Domaine_Offre = ?, 

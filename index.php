@@ -38,8 +38,8 @@ use App\controllers\StatistiquesController;
 
 $db_host = getenv('DB_HOST') ?: 'localhost';
 $db_name = getenv('DB_NAME') ?: 'projet';
-$db_user = getenv('DB_USER') ?: 'root';
-$db_pass = getenv('DB_PASS') ?: '';
+$db_user = getenv('DB_USER') ?: 'louis';
+$db_pass = getenv('DB_PASS') ?: 'motdepasse';
 $db_port = getenv('DB_PORT') ?: '3307';
 try {
     $db = new PDO(

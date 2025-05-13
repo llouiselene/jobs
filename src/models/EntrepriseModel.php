@@ -30,7 +30,7 @@ class EntrepriseModel extends Model{
      * @return array Liste de toutes les entreprises
      */
     public function getAllEntreprises() {
-        $stmt = $this->db->query("SELECT * FROM Entreprise");
+        $stmt = $this->db->query("SELECT * FROM entreprise");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -40,7 +40,7 @@ class EntrepriseModel extends Model{
      * @return array|false Données de l'entreprise ou false si non trouvée
      */
     public function getEntrepriseById($id_entreprise) {
-        $stmt = $this->db->prepare("SELECT * FROM Entreprise WHERE Id_Entreprise = ?");
+        $stmt = $this->db->prepare("SELECT * FROM entreprise WHERE Id_Entreprise = ?");
         $stmt->execute([$id_entreprise]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -91,7 +91,7 @@ class EntrepriseModel extends Model{
 
             // Vérification si l'entreprise existe déjà
             $checkStmt = $this->db->prepare(
-                "SELECT 1 FROM Entreprise 
+                "SELECT 1 FROM entreprise 
             WHERE Id_Entreprise = :id_entreprise 
             LIMIT 1"
             );
@@ -104,7 +104,7 @@ class EntrepriseModel extends Model{
 
             // Préparation de la requête d'insertion
             $stmt = $this->db->prepare(
-                "INSERT INTO Entreprise 
+                "INSERT INTO entreprise 
                 (Id_Entreprise, Nom_Entreprise, Site_Web, Date_Creation, Domaine_Entreprise, Nombre_Employes, 
                 Coordonnees_Entreprise, Description_Entreprise, Contact, Nombre_Stagiaires) 
                 VALUES (:id_entreprise,:nom_entreprise,:site_web,:date_creation,:domaine_entreprise,
@@ -166,7 +166,7 @@ class EntrepriseModel extends Model{
      * @return bool Succès de l'opération
      */
     public function updateEntreprise($id_entreprise, $nom_entreprise, $site_web, $date_creation, $domaine_entreprise, $nombre_employes, $coordonnees_entreprise, $description_entreprise, $contact, $nombre_stagiaires) {
-        $stmt = $this->db->prepare("UPDATE Entreprise SET Nom_Entreprise = ?, Site_Web = ?, Date_Creation = ?, Domaine_Entreprise = ?, Nombre_Employes = ?, Coordonnees_Entreprise = ?, Description_Entreprise = ?, Contact = ?, Nombre_Stagiaires = ? WHERE Id_Entreprise = ?");
+        $stmt = $this->db->prepare("UPDATE entreprise SET Nom_Entreprise = ?, Site_Web = ?, Date_Creation = ?, Domaine_Entreprise = ?, Nombre_Employes = ?, Coordonnees_Entreprise = ?, Description_Entreprise = ?, Contact = ?, Nombre_Stagiaires = ? WHERE Id_Entreprise = ?");
         return $stmt->execute([$nom_entreprise, $site_web, $date_creation, $domaine_entreprise, $nombre_employes, $coordonnees_entreprise, $description_entreprise, $contact, $nombre_stagiaires, $id_entreprise]);
     }
 
@@ -177,7 +177,7 @@ class EntrepriseModel extends Model{
      * @return bool Succès de l'opération
      */
     public function deleteEntreprise($id_entreprise) {
-        $stmt = $this->db->prepare("DELETE FROM Entreprise WHERE Id_Entreprise = ?");
+        $stmt = $this->db->prepare("DELETE FROM entreprise WHERE Id_Entreprise = ?");
         return $stmt->execute([$id_entreprise]);
     }
 
@@ -188,7 +188,7 @@ class EntrepriseModel extends Model{
      * @return array Nom de l'entreprise
      */
     public function getEntrepriseName($id_entreprise) {
-        $stmt = $this->db->query("SELECT Nom_Entreprise FROM Entreprise WHERE Id_Entreprise = ?");
+        $stmt = $this->db->query("SELECT Nom_Entreprise FROM entreprise WHERE Id_Entreprise = ?");
         $stmt->execute([$id_entreprise]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -205,7 +205,7 @@ class EntrepriseModel extends Model{
     {
         $this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $sql = "SELECT * FROM Entreprise 
+        $sql = "SELECT * FROM entreprise 
             WHERE 
                 Nom_Entreprise LIKE :search1 OR
                 Domaine_Entreprise LIKE :search2 OR
@@ -235,7 +235,7 @@ class EntrepriseModel extends Model{
      */
     public function countSearchResults($searchTerm)
     {
-        $sql = "SELECT COUNT(*) as total FROM Entreprise 
+        $sql = "SELECT COUNT(*) as total FROM entreprise 
             WHERE 
                 Nom_Entreprise LIKE :search1 OR
                 Domaine_Entreprise LIKE :search2 OR
@@ -260,7 +260,7 @@ class EntrepriseModel extends Model{
      * @return int Prochain ID disponible
      */
     public function getNextId() {
-        $stmt = $this->db->query("SELECT MAX(Id_Entreprise) FROM Entreprise");
+        $stmt = $this->db->query("SELECT MAX(Id_Entreprise) FROM entreprise");
         $maxId = $stmt->fetchColumn();
         return $maxId ? $maxId + 1 : 1;
     }

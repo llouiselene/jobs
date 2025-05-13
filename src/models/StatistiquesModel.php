@@ -57,10 +57,10 @@ class StatistiquesModel extends Model
         try {
             $totals = [];
 
-            $stmt = $this->db->query("SELECT COUNT(*) FROM Entreprise");
+            $stmt = $this->db->query("SELECT COUNT(*) FROM entreprise");
             $totals['entreprises'] = $stmt->fetchColumn();
 
-            $stmt = $this->db->query("SELECT COUNT(*) FROM Offre");
+            $stmt = $this->db->query("SELECT COUNT(*) FROM offre");
             $totals['offres'] = $stmt->fetchColumn();
 
             $stmt = $this->db->query("SELECT COUNT(*) FROM postuler");

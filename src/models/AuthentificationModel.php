@@ -7,7 +7,7 @@ use PDO;
 class AuthentificationModel
 {
     private $pdo;
-    private string $table = 'Utilisateur';
+    private string $table = 'utilisateur';
 
     public function __construct($pdo) {
         $this->pdo = $pdo;

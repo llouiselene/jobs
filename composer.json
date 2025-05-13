@@ -1,9 +1,9 @@
 {
-
   "name": "nicolas/web-project",
   "require": {
     "twig/twig": "^3.20",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "symfony/deprecation-contracts": "^2.5"
   },
   "autoload": {
     "psr-4": {
@@ -16,5 +16,5 @@
       "email": "nicolas.kuteifan@viacesi.fr"
     }
   ]
-
 }
+

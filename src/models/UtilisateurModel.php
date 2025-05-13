@@ -56,7 +56,7 @@ class UtilisateurModel extends Model
      */
     public function getUtilisateurById($id_utilisateur)
     {
-        $stmt = $this->db->prepare("SELECT * FROM Utilisateur WHERE Id_Utilisateur = ?");
+        $stmt = $this->db->prepare("SELECT * FROM utilisateur WHERE Id_Utilisateur = ?");
         $stmt->execute([$id_utilisateur]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -75,7 +75,7 @@ class UtilisateurModel extends Model
      */
     public function addUtilisateur($nom_utilisateur, $prenom_utilisateur, $email, $mot_de_passe, $genre, $Telephone, $Date_Naissance, $id_role)
     {
-        $stmt = $this->db->prepare("INSERT INTO Utilisateur (Nom_Utilisateur, Prenom, Email, Mot_de_passe, Genre, Telephone, Date_de_Naissance, Id_Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $this->db->prepare("INSERT INTO utilisateur (Nom_Utilisateur, Prenom, Email, Mot_de_passe, Genre, Telephone, Date_de_Naissance, Id_Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         return $stmt->execute([$nom_utilisateur, $prenom_utilisateur, $email, $mot_de_passe, $genre, $Telephone, $Date_Naissance, $id_role]);
     }
 
@@ -87,7 +87,7 @@ class UtilisateurModel extends Model
      */
     public function updateProfil($id_utilisateur, $data)
     {
-        $sql = "UPDATE Utilisateur SET Nom_Utilisateur = ?, Prenom = ?, Email = ?, Genre = ?, Telephone = ?, Date_de_Naissance = ?";
+        $sql = "UPDATE utilisateur SET Nom_Utilisateur = ?, Prenom = ?, Email = ?, Genre = ?, Telephone = ?, Date_de_Naissance = ?";
         $params = [
             $data['nom'],
             $data['prenom'],
@@ -120,7 +120,7 @@ class UtilisateurModel extends Model
             ->execute([$id_utilisateur]);
 
         // Puis supprimer l'utilisateur
-        $stmt = $this->db->prepare("DELETE FROM Utilisateur WHERE Id_Utilisateur = ?");
+        $stmt = $this->db->prepare("DELETE FROM utilisateur WHERE Id_Utilisateur = ?");
         return $stmt->execute([$id_utilisateur]);
     }
 
